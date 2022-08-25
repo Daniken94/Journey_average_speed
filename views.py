@@ -2,34 +2,6 @@ import pandas as pd
 from io import StringIO
 
 
-# data = StringIO("""
-# checkpoint    initialtime            id  speed1   speed2
-#     1   2020-09-18T12:03:14.485952Z car_01   150   150
-#     2   2020-09-18T12:10:14.485952Z car_01   130   125
-#     3   2020-09-18T12:20:14.485952Z car_01   140   140
-#     4   2020-09-18T12:40:14.485952Z car_01   160   140
-#     5   2020-09-19T12:55:14.485952Z car_01   160   140
-
-# """)
-
-# df = pd.read_csv(data, delim_whitespace=True)
-
-# df["initialtime"] = pd.to_datetime(df["initialtime"])
-
-# group_cols = ["id"]
-
-# time = df.groupby(group_cols)["initialtime"].agg([max, min]).eval('max-min').reset_index(name="journey_time")
-
-# speed1 = df.groupby(group_cols)["speed1"].mean().reset_index(name="average_speed1")
-
-# speed2 = df.groupby(group_cols)["speed2"].mean().reset_index(name="average_speed2")
-
-
-
-# result = pd.merge(time, speed1, on=group_cols, indicator=True)
-
-# print(result)
-
 # speed in km / hour; distance in km
 data = '''location    initial-time id  speed distance speed2 distance2
 1   2020-09-18T12:03:14.485952Z car_uno 72 9 71 9
