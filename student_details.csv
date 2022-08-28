@@ -1,0 +1,7 @@
+name , id , age, subjects , grade, average_score
+john doe, 1 , 17 , "maths,history,computer science", A , 90.1
+alex doe , 2 , 18, "maths,history,biology", A+ , 91
+mike doe , 3 , 18, "maths,history,biology", A+ , 80
+yohan doe , 4 , 18, "maths,history,biology", A+ , 95
+rex doe , 5 , 18, "maths,history,biology", A+ , 44
+pret doe , 6 , 18, "maths,history,biology", A+ , 98.2

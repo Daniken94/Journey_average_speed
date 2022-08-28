@@ -1,13 +1,13 @@
 import pandas as pd
 from datetime import datetime
+import random
+import math
 
 df = pd.read_csv(r'/home/kamil/workplace/Tritem/car_details.csv', delim_whitespace=True)
-
 
 df['elapsed-time'] = df['distance'] / df['speed'] # in hours
 df['elapsed-time2'] = df['distance2'] / df['speed2']
 df["initial-time"] = pd.to_datetime(df["initial-time"])
-
 
 
 start_time = df.groupby('id')['initial-time'].min().rename('start-time')
@@ -22,18 +22,28 @@ ave_speed2 = ((df.groupby('id')['distance2'].sum() / df.groupby('id')['elapsed-t
              .rename('ave speed2 (km/hr)').round(2))
 distance2 = (df.groupby('id')['distance2'].sum())
 
+
+
+today = str(datetime.today())
+id = "car_01"
+distance_new = random.randint(0,10)
+speed = distance / 0.112
+speed1 = math.ceil(speed)
+speed2 = math.floor(speed)
+
+
 new_data = {
-    "initial-time" : "2022-08-25 20:27:43.225624",
-    "id" : "car_01",
-    "speed" : "20",
-    "distance" : "5",
-    "speed2" : "20",
-    "distance2" : "5"
+    "initial-time" : [f'{today}'],
+    "id" : ["car_01"],
+    "speed" : ["20"],
+    "distance" : ["5"],
+    "speed2" : ["20"],
+    "distance2" : ["5"]
 }
 
-df = pd.DataFrame(list(new_data))
+
+df = pd.DataFrame(new_data)
 df.to_csv('car_details.csv', mode='a', index=False, header=False)
 
 result = pd.concat([start_time, end_time, time, ave_speed, distance, ave_speed2, distance2], axis=1)
-
 print(result)
