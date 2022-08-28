@@ -1,27 +1,23 @@
-from random import random
+import time
 import pandas as pd
-import datetime
+import random
+from datetime import datetime
+import math
+
 
 df = pd.read_csv('/home/kamil/workplace/Tritem/new.csv')
 
-df['elapsed-time'] = df['distance'] / df['wheel_speed'] # in hours
-df['elapsed-time2'] = df['distance'] / df['gps_speed'] # in hours
+df['elapsed-time'] = df['distance'] / df['wheel_speed']
+df['elapsed-time2'] = df['distance'] / df['gps_speed']
+df['elapsed-time3'] = df['distance'] / df['higher_speed']
 df["initial_time"] = pd.to_datetime(df["initial_time"])
-
-start_time = df.groupby('id')['initial_time'].min().rename('start-time')
-end_time = df.groupby('id')['initial_time'].max().rename('finish-time')
-
-time = df.groupby('id')["initial_time"].agg([max, min]).eval('max-min').rename('journey_time')
-
-
-# c = time[3]
-
-
-
-
-distance_new = 100
-speed = distance_new / 2
-
-print(time)
-
+journey_time = df.groupby('id')["initial_time"].agg([max, min]).eval('max-min').rename('journey_time')
+validate = str(journey_time)[19:34]
+validate_hour = int(validate[0:2])
+validate_minute = int(validate[4:5])
+validate_seconds = float(validate[6:])
+print(validate_hour)
+print(validate_minute)
+print(validate_seconds)
+print(validate)
 
