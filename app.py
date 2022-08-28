@@ -3,36 +3,38 @@ from datetime import datetime
 import random
 import math
 import time
-
-
+import timedelta
 
 
 
 starttime = time.time()
 
 def average_speed_during_jurney():
+
     while True:
         print("Checkpoint!")
 
-        df = pd.read_csv('/home/kamil/workplace/Tritem/new.csv')
+        df = pd.read_csv('/home/kamil/workplace/Tritem/car_details.csv')
 
-        df['elapsed-time'] = df['distance'] / df['wheel_speed']
-        df['elapsed-time2'] = df['distance'] / df['gps_speed']
-        df['elapsed-time3'] = df['distance'] / df['higher_speed']
         df["initial_time"] = pd.to_datetime(df["initial_time"])
+
+        journey_time = df.groupby('id')["initial_time"].agg([max, min]).eval('max-min').rename('journey_time')
+        validate = str(journey_time)[19:34]
+        validate_days = int(str(journey_time)[12:13])
+        validate_hour = int(str(validate[0:2]))
+        validate_minute = int(str(validate[4:5]))
+        validate_seconds = float(str(validate[6:]))
+
+
+        td = timedelta.Timedelta(days=validate_days, hours=validate_hour, minutes=validate_minute, seconds=validate_seconds)
+        time_result_hour = (td.total.seconds) * 0.000277777778
+
 
         start_time = df.groupby('id')['initial_time'].min().rename('start-time')
         end_time = df.groupby('id')['initial_time'].max().rename('finish-time')
         journey_time = df.groupby('id')["initial_time"].agg([max, min]).eval('max-min').rename('journey_time')
-
-
-        ave_wheel_speed = ((df.groupby('id')['distance'].sum() / df.groupby('id')['elapsed-time'].sum())
-                    .rename('ave wheel speed (km/hr)').round(2))
         distance = (df.groupby('id')['distance'].sum())
-        ave_gps_speed = ((df.groupby('id')['distance'].sum() / df.groupby('id')['elapsed-time2'].sum())
-                    .rename('ave gps speed (km/hr)').round(2))
-        ave_higher_speed = ((df.groupby('id')['distance'].sum() / df.groupby('id')['elapsed-time3'].sum())
-                    .rename('average speed (km/hr)').round(2))
+        ave_higher_speed = ((df.groupby('id')['distance'].sum() / time_result_hour).rename('average speed (km/hr)').round(2))
 
 
 
@@ -42,9 +44,7 @@ def average_speed_during_jurney():
         speed_up = math.ceil(speed)
         speed_down = math.floor(speed)
 
-
         random_speed = [speed_up, speed_down]
-
 
         new_data = {
             "initial-time" : [f'{today}'],
@@ -63,9 +63,8 @@ def average_speed_during_jurney():
 
         new_data.update(new_data_update)
 
-
         df = pd.DataFrame(new_data)
-        df.to_csv('new.csv', mode='a', index=False, header=False)
+        df.to_csv('car_details.csv', mode='a', index=False, header=False)
 
         result = pd.concat([start_time, end_time, journey_time, distance, ave_higher_speed], axis=1)
         print(result)
