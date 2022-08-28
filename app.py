@@ -9,7 +9,6 @@ import timedelta
 starttime = time.time()
 
 
-
 def average_speed_during_jurney():
 
     while True:
